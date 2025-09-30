@@ -48,25 +48,7 @@
 
     /* Specials Grid */
     .specials-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    .special-large {
-        grid-row: span 1;
-    }
-
-    .special-large .special-card {
-        aspect-ratio: 16/9;
-    }
-
-    .special-small-group {
-        flex-direction: row;
-        gap: 1rem;
-    }
-
-    .special-card.small {
-        aspect-ratio: 1;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     /* Visit Grid */
@@ -79,15 +61,8 @@
         gap: 2rem;
     }
 
-    /* Footer */
-    .footer-content {
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-    }
-
-    .footer-section:first-child {
-        grid-column: span 2;
-        text-align: center;
+    .social-grid {
+        grid-template-columns: repeat(4, 1fr);
     }
 }
 
@@ -240,23 +215,13 @@
     /* Specials */
     .specials-grid {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
     }
 
-    .special-large .special-card {
-        aspect-ratio: 4/3;
+    .special-card {
+        height: 300px;
     }
 
-    .special-small-group {
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .special-card.small {
-        aspect-ratio: 4/3;
-    }
-
-    /* Gallery */
+    /* Ambience */
     .gallery-nav {
         display: none;
     }
@@ -326,37 +291,24 @@
     }
 
     /* Footer */
-    .footer {
-        padding: 3rem 0 1.5rem;
-    }
-
     .footer-content {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 32px;
+    }
+
+    .footer-column {
         text-align: center;
-    }
-
-    .footer-nav {
-        align-items: center;
-    }
-
-    .footer-social {
-        justify-content: center;
-    }
-
-    .footer-contact {
-        align-items: center;
     }
 
     .footer-bottom {
         flex-direction: column;
+        gap: 16px;
         text-align: center;
-        gap: 1rem;
     }
 
-    .footer-legal {
+    .footer-bottom-right {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 8px;
     }
 }
 

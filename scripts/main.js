@@ -9,10 +9,11 @@ class NemosRaft {
         this.setupEventListeners();
         this.setupScrollEffects();
         this.setupAnimations();
-        this.setupGallery();
         this.setupAccordions();
         this.updateCurrentYear();
         this.setupMobileMenu();
+        this.setupSpecialWafflesReveal();
+        this.initAmbienceGallery();
     }
 
     setupEventListeners() {
@@ -108,96 +109,6 @@ class NemosRaft {
                     waffleCard.classList.add('fade-in');
                 }
             }, 600);
-        });
-    }
-
-    setupGallery() {
-        const galleryScroll = document.getElementById('galleryScroll');
-        const dots = document.querySelectorAll('.dot');
-        const prevBtn = document.getElementById('galleryPrev');
-        const nextBtn = document.getElementById('galleryNext');
-
-        if (!galleryScroll || !dots.length) return;
-
-        let currentSlide = 0;
-        const totalSlides = dots.length;
-
-        const updateGallery = (slideIndex) => {
-            const scrollAmount = slideIndex * galleryScroll.clientWidth;
-            galleryScroll.scrollTo({
-                left: scrollAmount,
-                behavior: 'smooth'
-            });
-
-            // Update active dot
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === slideIndex);
-            });
-
-            currentSlide = slideIndex;
-        };
-
-        // Dot navigation
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                updateGallery(index);
-            });
-        });
-
-        // Arrow navigation
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
-                const newSlide = currentSlide > 0 ? currentSlide - 1 : totalSlides - 1;
-                updateGallery(newSlide);
-            });
-        }
-
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                const newSlide = currentSlide < totalSlides - 1 ? currentSlide + 1 : 0;
-                updateGallery(newSlide);
-            });
-        }
-
-        // Touch/swipe support for mobile
-        let startX = 0;
-        let scrollLeft = 0;
-
-        galleryScroll.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].pageX;
-            scrollLeft = galleryScroll.scrollLeft;
-        });
-
-        galleryScroll.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const x = e.touches[0].pageX;
-            const walk = (x - startX) * 2;
-            galleryScroll.scrollLeft = scrollLeft - walk;
-        });
-
-        // Update dots based on scroll position
-        galleryScroll.addEventListener('scroll', () => {
-            const scrollLeft = galleryScroll.scrollLeft;
-            const slideWidth = galleryScroll.clientWidth;
-            const newSlide = Math.round(scrollLeft / slideWidth);
-            
-            if (newSlide !== currentSlide && newSlide >= 0 && newSlide < totalSlides) {
-                dots.forEach((dot, index) => {
-                    dot.classList.toggle('active', index === newSlide);
-                });
-                currentSlide = newSlide;
-            }
-        });
-
-        // Keyboard navigation
-        galleryScroll.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                const newSlide = currentSlide > 0 ? currentSlide - 1 : totalSlides - 1;
-                updateGallery(newSlide);
-            } else if (e.key === 'ArrowRight') {
-                const newSlide = currentSlide < totalSlides - 1 ? currentSlide + 1 : 0;
-                updateGallery(newSlide);
-            }
         });
     }
 
@@ -342,6 +253,97 @@ class NemosRaft {
         const yearElement = document.getElementById('currentYear');
         if (yearElement) {
             yearElement.textContent = new Date().getFullYear();
+        }
+    }
+
+    setupSpecialWafflesReveal() {
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('revealed');
+                    }, index * 200);
+                }
+            });
+        }, observerOptions);
+
+        const specialCards = document.querySelectorAll('.special-card[data-reveal]');
+        specialCards.forEach(card => {
+            observer.observe(card);
+        });
+    }
+
+    initAmbienceGallery() {
+        const slides = document.querySelectorAll('.gallery-slide');
+        const prevBtn = document.querySelector('.gallery-btn[data-direction="prev"]');
+        const nextBtn = document.querySelector('.gallery-btn[data-direction="next"]');
+        const dots = document.querySelectorAll('.dot');
+        let currentSlide = 0;
+
+        if (!slides.length) return;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            const next = (currentSlide + 1) % slides.length;
+            showSlide(next);
+        }
+
+        function prevSlide() {
+            const prev = currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
+            showSlide(prev);
+        }
+
+        // Navigation buttons
+        if (nextBtn) {
+            nextBtn.addEventListener('click', nextSlide);
+        }
+        if (prevBtn) {
+            prevBtn.addEventListener('click', prevSlide);
+        }
+
+        // Dot navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => showSlide(index));
+        });
+
+        // Auto-advance slides
+        setInterval(nextSlide, 5000);
+
+        // Touch/swipe support
+        let startX = 0;
+        let endX = 0;
+
+        const gallery = document.querySelector('.gallery-container');
+        if (gallery) {
+            gallery.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+            });
+
+            gallery.addEventListener('touchend', (e) => {
+                endX = e.changedTouches[0].clientX;
+                const diff = startX - endX;
+
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                }
+            });
         }
     }
 }
