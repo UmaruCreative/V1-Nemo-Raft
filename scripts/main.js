@@ -146,17 +146,6 @@ class NemosRaft {
                 // Toggle current item
                 item.classList.toggle('active');
 
-                // Smooth scroll to item if opening
-                if (!isActive) {
-                    setTimeout(() => {
-                        const headerHeight = 80;
-                        const offsetTop = item.offsetTop - headerHeight - 20;
-                        window.scrollTo({
-                            top: offsetTop,
-                            behavior: 'smooth'
-                        });
-                    }, 100);
-                }
             });
         });
     }
