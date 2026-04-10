@@ -71,6 +71,50 @@ Update Instagram and Facebook URLs:
 
 The following placeholder images should be replaced with actual photos:
 
+#### Replacing Image with Video (e.g., Patio Door)
+
+To replace a static image (like `/Composite-sliding-patio-door.png`) with a video on the Homepage, follow these steps:
+
+1.  **Prepare Your Video Asset**
+    *   Format: Use `.mp4` (H.264) or `.webm`.
+    *   Location: Create a `public/videos/` directory in your project root and place your video file there (e.g., `public/videos/patio-door-video.mp4`).
+
+2.  **Update the HTML (`index.html`)**
+    Locate the `<img>` tag you wish to replace (e.g., the one at line 85).
+
+    **Replace:**
+    ```html
+    <img src="/Composite-sliding-patio-door.png" alt="Composite sliding patio door" class="waffle-image">
+    ```
+
+    **With:**
+    ```html
+    <video
+        autoplay
+        muted
+        loop
+        playsinline
+        class="waffle-image"
+        poster="/Composite-sliding-patio-door.png">
+        <source src="/videos/patio-door-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    ```
+
+3.  **Verify the CSS (`styles/components.css`)**
+    Ensure the `.waffle-image` class is configured as follows:
+    ```css
+    .waffle-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    ```
+
+4.  **Local Preview**
+    Run `npm run dev` to see the changes.
+
+
 #### Hero Section
 - `nemos-hero-1080.mp4` - 7-10 second loop video of the raft/harbor
 - `nemos-hero-poster.jpg` - Video poster frame
