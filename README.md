@@ -67,6 +67,49 @@ Update Instagram and Facebook URLs:
 - Search for `@nemosraft` and `https://instagram.com/nemosraft`
 - Replace with your actual social media handles
 
+### Replacing Images with Video (e.g., Patio Door)
+
+To replace a static image (like `/Composite-sliding-patio-door.png`) with a video element:
+
+#### 1. Prepare Your Video Asset
+1.  **Format:** Use a web-friendly format like `.mp4` (H.264) or `.webm`.
+2.  **Size:** Keep the file size small (ideally under 5-10MB) for faster loading.
+3.  **Location:**
+    *   If it doesn't exist, create a `public/videos/` directory in your project root.
+    *   Save your video file there (e.g., `public/videos/patio-door-video.mp4`).
+
+#### 2. Update the HTML (`index.html`)
+Locate the `<img>` tag you wish to replace. In the current state, the patio door image corresponds to the `.waffle-image` at line 85.
+
+**Replace this:**
+```html
+<img src="/Composite-sliding-patio-door.png" alt="Composite sliding patio door" class="waffle-image">
+```
+
+**With this:**
+```html
+<video
+    autoplay
+    muted
+    loop
+    playsinline
+    class="waffle-image"
+    poster="/Composite-sliding-patio-door.png">
+    <source src="/videos/patio-door-video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+```
+
+#### 3. Verify the CSS (`styles/components.css`)
+Ensure the class (e.g., `.waffle-image`) is configured to handle the video correctly:
+```css
+.waffle-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+```
+
 ### Assets to Replace
 
 The following placeholder images should be replaced with actual photos:
