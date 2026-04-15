@@ -76,6 +76,35 @@ The following placeholder images should be replaced with actual photos:
 - `nemos-hero-poster.jpg` - Video poster frame
 - Waffle hero image (currently using Pexels placeholder)
 
+#### Replacing Hero Image with Video
+To replace a static image (like your `/Composite-sliding-patio-door.png` or the current placeholder) with a video:
+
+1. **Prepare Your Video Asset**:
+   - Use a web-friendly format like `.mp4` or `.webm`.
+   - Create a `public/videos/` directory in your project root.
+   - Save your video file there (e.g., `public/videos/patio-video.mp4`).
+
+2. **Update index.html**:
+   Find the `<img>` tag with the class `waffle-image` (around line 85) and replace it with a `<video>` element.
+
+   *Note: Although there is a React folder (`src/`), the current website content is managed directly in `index.html`.*
+
+   ```html
+   <video
+       autoplay
+       muted
+       loop
+       playsinline
+       class="waffle-image"
+       poster="https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=600">
+       <source src="/videos/patio-video.mp4" type="video/mp4">
+       Your browser does not support the video tag.
+   </video>
+   ```
+
+3. **Verify Styles**:
+   Ensure the `.waffle-image` class in `styles/components.css` still uses `object-fit: cover` to ensure the video fills its container without distortion.
+
 #### Gallery Images
 Replace the Pexels URLs in the ambience gallery with actual photos of:
 - Terrace seating
